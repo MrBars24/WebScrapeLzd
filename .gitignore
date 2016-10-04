@@ -83,3 +83,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+webscrape/__pycache__
