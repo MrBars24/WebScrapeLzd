@@ -2,7 +2,7 @@
 ###Setup
 
 1. Download and Extract the file [here](https://github.com/devHubby14/WebScrapeLzd/archive/master.zip)
-2. Make sure to install python3. If you already install it you can proceed to the next step
+2. Make sure to install python3. If you already install it you can proceed to the next step. Download [here](https://www.python.org/downloads/release/python-352/)
 3. Install dependencies "pip3 install -r requirements.txt"
 4. Run the app `home.py`
 
