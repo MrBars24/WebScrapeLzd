@@ -12,6 +12,7 @@ def callback():
 
 webscrape = WebScrape()
 root = Tk()
+root.title("Lazada WebScrape")
 var = StringVar()
 
 R1 = Radiobutton(root, text="electronics", variable=var, value="electronics", command=selectItem)
