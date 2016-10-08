@@ -1,14 +1,13 @@
 from tkinter import *
 from webscrape.webscrape import WebScrape
 
-categ = "electronics"
-
 def selectItem():
 	categ = var.get()
 	print(categ)
 
 def callback():
-	webscrape.run_lazada_scrape(categ)
+	print(var.get())
+	webscrape.run_lazada_scrape(var.get())
 
 webscrape = WebScrape()
 root = Tk()
