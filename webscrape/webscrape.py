@@ -12,9 +12,12 @@ class WebScrape:
 		source_code = requests.get(url)
 		txt = source_code.text
 		soup = BeautifulSoup(txt, 'html.parser')
-		pages = soup.select("span.pages a")
+		pages = soup.select("div.c-paging__wrapper a.c-paging__link")
 		counting = int(len(pages)-1)
-		max_page = int(pages[counting].get_text())
+		try:
+			max_page = int(pages[counting].get_text())
+		except IndexError:
+			print("Cannot Retrieve Max Page")
 		print(head,category,max_page)
 		page = 1
 		while page <= max_page:
