@@ -1,5 +1,6 @@
 import requests
 import csv
+import operator
 from bs4 import BeautifulSoup
 
 class WebScrape:
@@ -14,10 +15,15 @@ class WebScrape:
 		soup = BeautifulSoup(txt, 'html.parser')
 		pages = soup.select("div.c-paging__wrapper a.c-paging__link")
 		counting = int(len(pages)-1)
+		max_page = 1
+
 		try:
 			max_page = int(pages[counting].get_text())
 		except IndexError:
 			print("Cannot Retrieve Max Page")
+		except UnboundLocalError:
+			max_page = 1
+
 		print(head,category,max_page)
 		page = 1
 		while page <= max_page:
@@ -95,10 +101,7 @@ class WebScrape:
 			"instant cameras":"shop-instant-camera","camera accessories":"shop-camera-accessories", \
 			"memory cards":"shop-camera-memory-card","monopods & tripods":"shop-tripods-monopods", \
 			"camera bags & cases":"shop-camera-bags","action camera accessories":"shop-sport-camera-accessories", \
-			"televisions":"shop-televisions","24 inches & below":"", \
-			"25 - 31 inches":"","32 inches":"", \
-			"33 - 42 inches":"","43 - 54 inches":"", \
-			"55 inches & above":"","audio":"shop-audio", \
+			"televisions":"shop-televisions", \
 			"headphones & headsets":"shop-audio-headphones","portable speakers":"shop-portable-speakers-for-tv", \
 			"home & audio theater":"shop-home-audio-theater","audio players":"shop-mp3-player-ipods", \
 			"video":"shop-video","projectors":"shop-projectors-2", \
@@ -289,8 +292,8 @@ class WebScrape:
 		self.myfile = open(c + ".csv", 'w', newline='')
 		writer = csv.DictWriter(self.myfile, fieldnames = ["url", "product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image"], delimiter=',')
 		writer.writeheader()
-		for k,v in category.items():
-			for key,val in v.items():
+		for k,v in sorted(category.items(), key=operator.itemgetter(1)):
+			for key,val in sorted(v.items(), key=operator.itemgetter(1)):
 				self.lazada_scrape(k,key,val)
 
 		print("Done Scraping")
