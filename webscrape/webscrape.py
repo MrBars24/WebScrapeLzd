@@ -36,44 +36,44 @@ class WebScrape:
 			for div in soup.find_all("div", {"class":"product-card"}):
 					mylist = []
 					for link in div.find_all("a"):
-						mylist.insert(9,str(link.get("href")))
+						mylist.insert(0,str(link.get("href")))
 						for title in div.find_all("span", {"class":"product-card__name"}):
-							mylist.insert(0,(str(title.text).replace("\u200f"," ").replace("\uFF08","(").replace("\uff09",")")))
-							mylist.insert(1,head)
-							mylist.insert(2,category)
+							mylist.insert(1,(str(title.text).replace("\u200f"," ").replace("\uFF08","(").replace("\uff09",")")))
+							mylist.insert(2,head)
+							mylist.insert(3,category)
 						for price in div.find_all("div", {"class":"product-card__price"}):
-							mylist.insert(3,str(price.text.replace("\u20B1","")))
+							mylist.insert(4,str(price.text.replace("\u20B1","")))
 							
 						sale = div.find_all("div", {"class":"product-card__sale"})
 						if not sale:
-							mylist.insert(4,"0%")
+							mylist.insert(5,"0%")
 						else:                            
 							for sales in sale:
-								mylist.insert(4,str(sales.text))
+								mylist.insert(5,str(sales.text))
 						old = div.find_all("div", {"class":"old-price-wrap"})
 						if not old:
-							mylist.insert(5,"0.00")
+							mylist.insert(6,"0.00")
 						else:                            
 							for olds in old:
-								mylist.insert(5,str(olds.text).replace("\u20B1","").replace("\n",""))
+								mylist.insert(6,str(olds.text).replace("\u20B1","").replace("\n",""))
 
 						installment = div.find_all("span", {"class":"installment-part"})
 						if not installment:
-							mylist.insert(6,"0.00")
+							mylist.insert(7,"0.00")
 						else:
 							for installments in installment:
-								mylist.insert(6,str(installments.text).replace("\u20B1",""))
+								mylist.insert(7,str(installments.text).replace("\u20B1",""))
 
 						rating = div.find_all("span", {"class":"rating__number"})
 						if not rating:
-							mylist.insert(7,"(0 reviews)")
+							mylist.insert(8,"(0 reviews)")
 						else:
 							for ratings in rating:
-								mylist.insert(7,str(ratings.text))
+								mylist.insert(8,str(ratings.text))
 
 						img = div.find_all("img", {"data-image-key":"catalog"})
 						for imgs in img:
-							mylist.insert(8,str(imgs.attrs["data-original"]))
+							mylist.insert(9,str(imgs.attrs["data-original"]))
 
 						try:
 							wr = csv.writer(self.myfile, quoting=csv.QUOTE_ALL)
