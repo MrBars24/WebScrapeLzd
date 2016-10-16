@@ -1,5 +1,6 @@
 import requests
 import csv
+import sys
 import operator
 from bs4 import BeautifulSoup
 
@@ -24,10 +25,10 @@ class WebScrape:
 		except UnboundLocalError:
 			max_page = 1
 
-		print(head,category,max_page)
+		sys.stdout.write("\nScraping at %s - %s\n" % (head,category))
 		page = 1
 		while page <= max_page:
-			print(page)
+			sys.stdout.write("\rScraping %d out of %d" % (page,max_page))
 			url = "http://www.lazada.com.ph/shop-mobiles/?page=" + str(page)
 			source_code = requests.get(url)
 			txt = source_code.text
@@ -35,51 +36,53 @@ class WebScrape:
 			for div in soup.find_all("div", {"class":"product-card"}):
 					mylist = []
 					for link in div.find_all("a"):
-						mylist.append(str(link.get("href")))
+						mylist.insert(9,str(link.get("href")))
 						for title in div.find_all("span", {"class":"product-card__name"}):
-							mylist.append(str(title.text).replace("\u200f"," ").replace("\uFF08","(").replace("\uff09",")"))
-							mylist.append(head)
-							mylist.append(category)
+							mylist.insert(0,(str(title.text).replace("\u200f"," ").replace("\uFF08","(").replace("\uff09",")")))
+							mylist.insert(1,head)
+							mylist.insert(2,category)
 						for price in div.find_all("div", {"class":"product-card__price"}):
-							mylist.append(str(price.text.replace("\u20B1","Php ")))
+							mylist.insert(3,str(price.text.replace("\u20B1","")))
 							
 						sale = div.find_all("div", {"class":"product-card__sale"})
 						if not sale:
-							mylist.append("0%")
+							mylist.insert(4,"0%")
 						else:                            
 							for sales in sale:
-								mylist.append(str(sales.text))
+								mylist.insert(4,str(sales.text))
 						old = div.find_all("div", {"class":"old-price-wrap"})
 						if not old:
-							mylist.append("Php 0.00")
+							mylist.insert(5,"0.00")
 						else:                            
 							for olds in old:
-								mylist.append(str(olds.text).replace("\u20B1","Php ").replace("\n",""))
+								mylist.insert(5,str(olds.text).replace("\u20B1","").replace("\n",""))
 
 						installment = div.find_all("span", {"class":"installment-part"})
 						if not installment:
-							mylist.append("Php 0.00")
+							mylist.insert(6,"0.00")
 						else:
 							for installments in installment:
-								mylist.append(str(installments.text).replace("\u20B1","Php "))
+								mylist.insert(6,str(installments.text).replace("\u20B1",""))
 
 						rating = div.find_all("span", {"class":"rating__number"})
 						if not rating:
-							mylist.append("(0 reviews)")
+							mylist.insert(7,"(0 reviews)")
 						else:
 							for ratings in rating:
-								mylist.append(str(ratings.text))
+								mylist.insert(7,str(ratings.text))
 
 						img = div.find_all("img", {"data-image-key":"catalog"})
 						for imgs in img:
-							mylist.append(str(imgs.attrs["data-original"]))
+							mylist.insert(8,str(imgs.attrs["data-original"]))
 
 						try:
 							wr = csv.writer(self.myfile, quoting=csv.QUOTE_ALL)
 							wr.writerow(mylist)
 						except PermissionError:
 							pass
+
 			page+=1
+		sys.stdout.flush()
 
 	def run_lazada_scrape(self,c):
 		if c == "electronics":
@@ -290,7 +293,7 @@ class WebScrape:
 				
 
 		self.myfile = open(c + ".csv", 'w', newline='')
-		writer = csv.DictWriter(self.myfile, fieldnames = ["url", "product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image"], delimiter=',')
+		writer = csv.DictWriter(self.myfile, fieldnames = ["product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image", "url"], delimiter=',')
 		writer.writeheader()
 		for k,v in sorted(category.items(), key=operator.itemgetter(1)):
 			for key,val in sorted(v.items(), key=operator.itemgetter(1)):
