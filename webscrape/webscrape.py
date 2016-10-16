@@ -293,7 +293,7 @@ class WebScrape:
 				
 
 		self.myfile = open(c + ".csv", 'w', newline='')
-		writer = csv.DictWriter(self.myfile, fieldnames = ["product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image", "url"], delimiter=',')
+		writer = csv.DictWriter(self.myfile, fieldnames = ["url", "product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image"], delimiter=',')
 		writer.writeheader()
 		for k,v in sorted(category.items(), key=operator.itemgetter(1)):
 			for key,val in sorted(v.items(), key=operator.itemgetter(1)):
