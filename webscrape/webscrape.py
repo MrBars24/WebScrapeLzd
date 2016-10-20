@@ -38,11 +38,11 @@ class WebScrape:
 					for link in div.find_all("a"):
 						mylist.insert(0,str(link.get("href")))
 						for title in div.find_all("span", {"class":"product-card__name"}):
-							mylist.insert(1,(str(title.text).replace("\u200f"," ").replace("\uFF08","(").replace("\uff09",")")))
+							mylist.insert(1,(str(title.text).replace("\u200f"," ").replace("\uFF08","(").replace("\uff09",")").replace("\uffa0"," ")))
 							mylist.insert(2,head)
 							mylist.insert(3,category)
 						for price in div.find_all("div", {"class":"product-card__price"}):
-							mylist.insert(4,str(price.text.replace("\u20B1","")))
+							mylist.insert(4,str(price.text.replace("\u20B1","").replace("\uffa0"," ")))
 							
 						sale = div.find_all("div", {"class":"product-card__sale"})
 						if not sale:
@@ -55,14 +55,14 @@ class WebScrape:
 							mylist.insert(6,"0.00")
 						else:                            
 							for olds in old:
-								mylist.insert(6,str(olds.text).replace("\u20B1","").replace("\n",""))
+								mylist.insert(6,str(olds.text).replace("\u20B1","").replace("\uffa0"," ").replace("\n",""))
 
 						installment = div.find_all("span", {"class":"installment-part"})
 						if not installment:
 							mylist.insert(7,"0.00")
 						else:
 							for installments in installment:
-								mylist.insert(7,str(installments.text).replace("\u20B1",""))
+								mylist.insert(7,str(installments.text).replace("\u20B1","").replace("\uffa0"," "))
 
 						rating = div.find_all("span", {"class":"rating__number"})
 						if not rating:
@@ -293,7 +293,7 @@ class WebScrape:
 				
 
 		self.myfile = open(c + ".csv", 'w', newline='')
-		writer = csv.DictWriter(self.myfile, fieldnames = ["url", "product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image"], delimiter=',')
+		writer = csv.DictWriter(self.myfile, fieldnames = ["product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image", "url"], delimiter=',')
 		writer.writeheader()
 		for k,v in sorted(category.items(), key=operator.itemgetter(1)):
 			for key,val in sorted(v.items(), key=operator.itemgetter(1)):
