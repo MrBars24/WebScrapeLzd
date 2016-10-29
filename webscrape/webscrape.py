@@ -30,8 +30,7 @@ class WebScrape:
 		page = 1
 		while page <= max_page:
 			sys.stdout.write("\rScraping %d out of %d" % (page,max_page))
-			url = "http://www.lazada.com.ph/shop-mobiles/?page=" + str(page)
-			source_code = requests.get(url)
+			source_code = requests.get(url +"/?page=" + str(page))
 			txt = source_code.text
 			soup = BeautifulSoup(txt,'html.parser')
 			for div in soup.find_all("div", {"class":"product-card"}):
