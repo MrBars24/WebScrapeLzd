@@ -38,7 +38,7 @@ class WebScrape:
 					for link in div.find_all("a"):
 						mylist.insert(0,str(link.get("href")))
 						for title in div.find_all("span", {"class":"product-card__name"}):
-							mylist.insert(1,(str(title.text).replace("\u200f"," ").replace("\uFF08","(").replace("\uff09",")").replace("\uffa0"," ").replace("\n"," ")))
+							mylist.insert(1,(str(title.text).encode("utf-8")))
 							mylist.insert(2,head)
 							mylist.insert(3,category)
 						for price in div.find_all("div", {"class":"product-card__price"}):
@@ -73,7 +73,10 @@ class WebScrape:
 
 						img = div.find_all("img", {"data-image-key":"catalog"})
 						for imgs in img:
-							mylist.insert(9,str(imgs.attrs["data-original"]))
+							try:
+								mylist.insert(9,str(imgs.attrs["data-original"]))
+							except:
+								pass
 
 						try:
 							wr = csv.writer(self.myfile, quoting=csv.QUOTE_ALL)
