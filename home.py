@@ -21,6 +21,8 @@ class MainFrame:
                                 command= lambda: self.new_window("sportstravel"))
     	self.btn8 = tk.Button(self.frame, text="motor,music,more", 
                                 command= lambda: self.new_window("motormusic"))
+    	self.btn9 = tk.Button(self.frame, text="custom",command= lambda: self.custom_window("motormusic"))
+
     	self.btn1.pack(side="top", pady=5)
     	self.btn2.pack(side="top", pady=5)
     	self.btn3.pack(side="top", pady=5)
@@ -29,7 +31,14 @@ class MainFrame:
     	self.btn6.pack(side="top", pady=5)
     	self.btn7.pack(side="top", pady=5)
     	self.btn8.pack(side="top", pady=5)
+    	self.btn9.pack(side="top", pady=5)
     	self.frame.pack()
+
+    def custom_window(self,category):
+        self.newWindow = tk.Toplevel(self.master)
+        self.newWindow.resizable(width=False, height=False)
+        self.app = CustomFrame(self.newWindow)
+
     def new_window(self,category):
         self.newWindow = tk.Toplevel(self.master)
         self.newWindow.resizable(width=False, height=False)
@@ -46,8 +55,7 @@ class MainFrame:
 				"skirts","jeans","lingerie & nightwear","muslim wear","swim wear","accessories","bags","tote bags","shoulder bags","top handle bags", \
 				"cross body bags","satchels","sling bags","backpacks","clutches","wallets","eyewear","sunglasses","eyeglasses","shoes","sneakers","flat shoes", \
 				"heels","boots","sandals","flip flops","jewellery","bracelets & bangles","necklaces & pendants","rings", \
-				"earrings","jewellery sets","watches","fashion","business","casual","sports","buying guide", \
-				"shoes","bags","watches","accessories"])
+				"earrings","jewellery sets","watches","fashion","business","casual","sports","buying guide","shoes","bags","watches","accessories"])
         if category == "mfashion":
         	self.app = ListFrame(self.newWindow, "men's fashion", ["clothing","jacket & coats","t-shirts","pants & shorts","jeans","shirts", \
 				"sweaters & cardigans","suits","uderwear & socks","swim wear","accessories","bags",
@@ -96,6 +104,44 @@ class MainFrame:
 				"baking & cooking","wine & spirits","dogs","food","grooming supplies","beds & accessories","clean up & toilet","cats", \
 				"food","foods & accessories","litter & toilet","grooming supplies","bird, fish & small animals","aquariums & accessories", \
 				"beds & accessories","pet care"])
+
+class CustomFrame:
+    def __init__(self, master):
+        self.wscrape = webscrape = WebScrape()
+        self.master = master
+        self.frame = tk.Frame(self.master)
+        self.entryText = tk.Entry(self.frame)
+        self.entryText.grid(row=0, column=1)
+        self.label = tk.Label(self.frame, text="header").grid(row=0, column=0)
+
+        self.entryText1 = tk.Entry(self.frame)
+        self.entryText1.grid(row=1, column=1)
+        self.label1 = tk.Label(self.frame, text="category").grid(row=1, column=0)
+
+        self.entryText2 = tk.Entry(self.frame)
+        self.entryText2.grid(row=2, column=1)
+        self.label2 = tk.Label(self.frame, text="url endpoint").grid(row=2, column=0)
+        
+        self.entryText3 = tk.Entry(self.frame)
+        self.entryText3.grid(row=3, column=1)
+        self.label3 = tk.Label(self.frame, text="start page").grid(row=3, column=0)
+        
+        self.entryText4 = tk.Entry(self.frame)
+        self.entryText4.grid(row=4, column=1)
+        self.label4 = tk.Label(self.frame, text="end page").grid(row=4, column=0)
+
+        self.btnScrape = tk.Button(self.master,text="Scrape",  command=lambda:self.scrape_custom())
+        self.btnScrape.pack(side="bottom",pady=5)
+        self.frame.pack()
+
+    def scrape_custom(self):
+        heads = self.entryText.get()
+        categs = self.entryText.get()
+        urls = self.entryText.get()
+        mins = self.entryText.get()
+        maxs = self.entryText.get()
+        self.wscrape.run_custom_scrape(heads,categs,urls,mins,maxs)
+
 class ListFrame:
     def __init__(self, master, categ, picks=[]):
         self.wscrape = webscrape = WebScrape()
@@ -331,7 +377,7 @@ def main():
     root = tk.Tk()
     root.title("Lazada WebScrape")
     root.resizable(width=False, height=False)
-    root.geometry('{}x{}'.format(200, 300))
+    root.geometry('{}x{}'.format(200, 350))
     app = MainFrame(root)
     root.mainloop()
 

@@ -9,7 +9,7 @@ class WebScrape:
 	def __init__(self):
 		print("WebScrape Imported")
 
-	def lazada_scrape(self,head,category,url):
+	def lazada_scrape(self,head,category,url,mn=0,mx=0):
 		list_of_rows = []
 		url = "http://www.lazada.com.ph/"+ url +"/"
 		source_code = requests.get(url)
@@ -28,6 +28,10 @@ class WebScrape:
 
 		sys.stdout.write("\nScraping at %s - %s\n" % (head,category))
 		page = 1
+		if mn != 0 and mx != 0:
+			page = mn
+			max_page = mx
+
 		while page <= max_page:
 			sys.stdout.write("\rScraping %d out of %d" % (page,max_page))
 			source_code = requests.get(url +"/?page=" + str(page))
@@ -95,3 +99,9 @@ class WebScrape:
 			self.lazada_scrape(m,k,v)
 
 		print("\nDone Scraping")
+
+	def run_custom_scrape(self,head,category,url,mn=0,mx=0):
+		self.myfile = open(str(uuid.uuid4()) + ".csv", 'w', newline='')
+		writer = csv.DictWriter(self.myfile, fieldnames = [ "url", "product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image"], delimiter=',')
+		writer.writeheader()
+		self.lazada_scrape(head,category,url,mn,mx)
