@@ -29,8 +29,8 @@ class WebScrape:
 		sys.stdout.write("\nScraping at %s - %s\n" % (head,category))
 		page = 1
 		if mn != 0 and mx != 0:
-			page = mn
-			max_page = mx
+			page = int(mn)
+			max_page = int(mx)
 
 		while page <= max_page:
 			sys.stdout.write("\rScraping %d out of %d" % (page,max_page))

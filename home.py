@@ -136,10 +136,10 @@ class CustomFrame:
 
     def scrape_custom(self):
         heads = self.entryText.get()
-        categs = self.entryText.get()
-        urls = self.entryText.get()
-        mins = self.entryText.get()
-        maxs = self.entryText.get()
+        categs = self.entryText1.get()
+        urls = self.entryText2.get()
+        mins = self.entryText3.get()
+        maxs = self.entryText4.get()
         self.wscrape.run_custom_scrape(heads,categs,urls,mins,maxs)
 
 class ListFrame:
