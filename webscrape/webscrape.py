@@ -105,3 +105,5 @@ class WebScrape:
 		writer = csv.DictWriter(self.myfile, fieldnames = [ "url", "product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image"], delimiter=',')
 		writer.writeheader()
 		self.lazada_scrape(head,category,url,mn,mx)
+
+		print("\nDone Scraping")
