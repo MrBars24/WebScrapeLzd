@@ -101,7 +101,7 @@ class WebScrape:
 		print("\nDone Scraping")
 
 	def run_custom_scrape(self,head,category,url,mn=0,mx=0):
-		self.myfile = open(str(uuid.uuid4()) + ".csv", 'w', newline='')
+		self.myfile = open(str(uuid.uuid4()) + ".csv", 'w', lineterminator='\n')
 		writer = csv.DictWriter(self.myfile, fieldnames = [ "url", "product_name", "product_header", "product_category", "product_price", "product_sale", "product_old", "installment", "rating", "product_image"], delimiter=',')
 		writer.writeheader()
 		self.lazada_scrape(head,category,url,mn,mx)
